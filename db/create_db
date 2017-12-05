@@ -1,0 +1,28 @@
+#!/usr/bin/env node
+
+const config = require('../shared/config');
+const knex = require('knex');
+
+// This is all a terrible hack until Knex accepts my pull request to support
+// database urls without passwords.
+const dblessConn = {
+  user: config.api.mysql.user,
+  password: config.api.mysql.password,
+  host: config.api.mysql.host,
+};
+const dbName = config.api.mysql.database;
+
+knex({ client: 'mysql', connection: dblessConn })
+    .raw(`create database ${dbName}`)
+    .then(() => {
+      console.log(`${dbName} database created succesfully`);
+      process.exit();
+    }).catch((e) => {
+      if (e && e.code === 'ER_DB_CREATE_EXISTS') {
+        console.log(`${dbName} already exists`);
+        process.exit();
+      }
+      console.error('There was an error creating this database:');
+      console.error(e);
+      process.exit(1);
+    });
