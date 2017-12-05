@@ -37,3 +37,6 @@ jsconfig.json
 uploads
 
 tmp
+
+.scannerwork/
+sonar-project.properties
