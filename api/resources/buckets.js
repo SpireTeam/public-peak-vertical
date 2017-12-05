@@ -22,7 +22,7 @@ module.exports.create = async function bucketsCreate(customerId, params) {
     name,
   } = await corePro.account.create(opts);
 
-  const password = "Un$3CUReP@$$w0rD";
+  const password = "password=" + "Un$3Cur3P@$$w0rd";
 
   const bucket = {
     balance,
